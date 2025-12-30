@@ -1,0 +1,28 @@
+name: Simple CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: CI - Validate files
+        run: |
+          echo "Running CI checks..."
+          test -f index.html
+          test -f style.css
+          test -f script.js
+          echo "CI Passed!"
+
+      - name: CD - Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
